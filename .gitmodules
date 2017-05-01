@@ -1,0 +1,3 @@
+[submodule "dmf2json"]
+	path = dmf2json
+	url = https://github.com/Kisioj/dmf2json.git
