@@ -2,7 +2,8 @@ import controls
 from template import TEMPLATE
 import menu
 import json
-from dmf2json.dmf2json import DMFParser
+from dmf2json.dmf2json import DMFParser as DMF2JSONParser
+import collections
 
 
 TYPES_MAP = {
@@ -18,44 +19,28 @@ TYPES_MAP = {
 }
 
 
-def main():
-    parser = DMFParser()
-    parser.parse_file('byond.dmf')
+def main(filename_dmf='byond.dmf', filename_json='byond.json', filename_pyqt='byond.py'):
+    parser = DMF2JSONParser(input_filename=filename_dmf, output_filename=filename_json)
+    parser.parse()
+    print(parser.to_json())
 
-    with open('byond.json', 'w') as f:
-        f.write(json.dumps(parser.windows, indent=4))
-    print(json.dumps(parser.windows, indent=4))
-
-    ui_menus = []
-    for menu_bar in parser.menubars:
-        ui_menus.append(menu.Bar(menu_bar))
+    ui_menubars = collections.OrderedDict()
+    for menubar_data in parser.menubars:
+        ui_menubars[menubar_data['id']] = menu.MenuBar(menubar_data)
 
     ui_windows = []
-    for window in parser.windows:
-        # print()
-        control = window['controls'][0]
-        container = TYPES_MAP[control['type']](control)
-        if container.menu:
-            for ui_menu in ui_menus:
-                if container.menu == ui_menu.id:
-                    container.menu = ui_menu
-
-        ui_windows.append(container)
-        # print(container)
-        for control in window['controls'][1:]:
+    for window_data in parser.windows:
+        window = TYPES_MAP[window_data['type']](window_data)
+        for control in window.controls:
             element = TYPES_MAP[control['type']](control)
-            container.children.append(element)
-            element.parent = container
-            # print('\t{}'.format(element))
+            element.parent = window
+            window.children.append(element)
+        window.menu = ui_menubars.get(window.menu)
+        ui_windows.append(window)
 
-    for ui_window in ui_windows:
-        print()
-        print(ui_window)
-        for element in ui_window.children:
-            print('\t{}'.format(element))
-
+    print("-")
     print(ui_windows[0].generate_code())
-
+    print("-")
     result = TEMPLATE.format(ui_windows[0].generate_code())
     with open('pyqt5.py', 'w') as f:
         f.write(result)

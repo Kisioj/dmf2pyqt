@@ -246,7 +246,7 @@ class Window(Main):
             for group in self.menu.groups:
                 qt('self.{}Group = QtWidgets.QActionGroup(self.{})', group, self.qt_name, method=False)
 
-            for category in self.menu.categories.values():
+            for category in self.menu.categories:
                 category_id = 'menu' + category.id
                 qt('', method=False)
                 qt('self.{} = QtWidgets.QMenu(self.menuBar)', category_id, method=False)
@@ -254,28 +254,28 @@ class Window(Main):
                 qt('self.{}.setTitle("{}")', category_id, category.name, method=False)
                 qt('self.menuBar.addAction(self.{}.menuAction())', category_id, method=False)
 
-                for element in category.elements:
-                    print(element)
-                    if isinstance(element, menu.Separator):
+                for action in category.actions:
+                    print(action)
+                    if action is None:  # separator
                         qt('', method=False)
                         qt('self.{}.addSeparator()'.format(category_id), method=False)
-                    elif isinstance(element, menu.Action):
-                        element_id = 'action' + element.id.capitalize()
+                    elif isinstance(action, menu.Action):
+                        action_id = 'action' + action.id.capitalize()
                         qt('', method=False)
-                        if element.group:
+                        if action.group:
                             qt(
-                                'self.{} = QtWidgets.QAction(self.{}Group)'.format(element_id, element.group),
+                                'self.{} = QtWidgets.QAction(self.{}Group)'.format(action_id, action.group),
                                 method=False
                             )
                         else:
-                            qt('self.{} = QtWidgets.QAction(self.{})'.format(element_id, category_id), method=False)
-                        qt('self.{0}.setObjectName("{0}")'.format(element_id), method=False)
-                        qt('self.{}.setText("{}")'.format(element_id, element.name), method=False)
-                        if element.can_check:
-                            qt('self.{}.setCheckable(True)'.format(element_id), method=False)
-                        if element.is_checked:
-                            qt('self.{}.setChecked(True)'.format(element_id), method=False)
-                        qt('self.{}.addAction(self.{})'.format(category_id, element_id), method=False)
+                            qt('self.{} = QtWidgets.QAction(self.{})'.format(action_id, category_id), method=False)
+                        qt('self.{0}.setObjectName("{0}")'.format(action_id), method=False)
+                        qt('self.{}.setText("{}")'.format(action_id, action.name), method=False)
+                        if action.can_check:
+                            qt('self.{}.setCheckable(True)'.format(action_id), method=False)
+                        if action.is_checked:
+                            qt('self.{}.setChecked(True)'.format(action_id), method=False)
+                        qt('self.{}.addAction(self.{})'.format(category_id, action_id), method=False)
 
         self.qt_name = widget_name
         for child in self.children:
