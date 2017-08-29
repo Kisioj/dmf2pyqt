@@ -11,25 +11,25 @@ class Bar:
         self.categories = collections.OrderedDict()
         self.groups = []
 
-        for element in element['elements']:
-            attributes = element['attributes']
+        for control in element['controls']:
+            # attributes = element['attributes']
 
-            group = attributes.get('group')
+            group = control.get('group')
             if group and group not in self.groups:
                 self.groups.append(group)
 
-            category_name = attributes.pop('category')
+            category_name = control.pop('category')
             if category_name in self.categories:
                 category = self.categories[category_name]
             else:
                 category = Category(category_name)
                 self.categories[category_name] = category
 
-            attributes['category'] = category
-            if not element['id'] and not attributes['name']:
-                menu_element = Separator(element)
+            control['category'] = category
+            if not control.get('id') and not control.get('name'):
+                menu_element = Separator(control)
             else:
-                menu_element = Action(element)
+                menu_element = Action(control)
             category.elements.append(menu_element)
             # print(menu_element)
 
@@ -56,17 +56,17 @@ class Action:
 
     def __init__(self, element):
         self.id = element.get('id')
-        attributes = element['attributes']
+        # attributes = element['attributes']
 
         if not self.id:
-            name = attributes.get('name', '')
+            name = element.get('name', '')
             if '\\t' in name:
                 name = name.split('\\t')
                 name = name[0]
             self.id = map(lambda string: ''.join(char for char in string if char.isalnum()), name.split())
             self.id = '_'.join(self.id)
 
-        for k, v in attributes.items():
+        for k, v in element.items():
             setattr(self, k, v)
 
     def __repr__(self):

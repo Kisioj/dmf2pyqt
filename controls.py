@@ -106,8 +106,8 @@ class Control:
 
         self.id = element['id']
         self.parent = element.get('parent')
-        attributes = element['attributes']
-        for k, v in attributes.items():
+
+        for k, v in element.items():
             setattr(self, k, v)
 
         self.qt_name = ''
