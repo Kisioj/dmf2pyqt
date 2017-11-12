@@ -14,6 +14,12 @@ class BYONDWidget:
         self.anchor_1 = None
         self.anchor_2 = None
 
+    def onShowEvent(self):
+        pass
+
+    def onHideEvent(self):
+        pass
+
     def setAnchor1(self, *args):
         if len(args) == 1:
             self.anchor_1, = args
@@ -108,8 +114,40 @@ class Child(QtWidgets.QWidget, BYONDWidget):
 class Pane(QtWidgets.QWidget, BYONDWidget):
     pass
 
+class Browser(QtWidgets.QWidget, BYONDWidget):
+    def showEvent(self, *args, **kwargs):
+        super().showEvent(*args, **kwargs)
+        self.onShowEvent()
+        print("Browser.showEvent")
+
+    def hideEvent(self, *args, **kwargs):
+        super().hideEvent(*args, **kwargs)
+        self.onHideEvent()
+        print("Browser.hideEvent")
+
+
 class Map(QtWidgets.QWidget, BYONDWidget):
-    pass
+    def showEvent(self, *args, **kwargs):
+        super().showEvent(*args, **kwargs)
+        self.onShowEvent()
+        print("Map.showEvent")
+
+    def hideEvent(self, *args, **kwargs):
+        super().hideEvent(*args, **kwargs)
+        self.onHideEvent()
+        print("Map.hideEvent")
+
+
+class Info(QtWidgets.QWidget, BYONDWidget):
+    def showEvent(self, *args, **kwargs):
+        super().showEvent(*args, **kwargs)
+        self.onShowEvent()
+        print("Info.showEvent")
+
+    def hideEvent(self, *args, **kwargs):
+        super().hideEvent(*args, **kwargs)
+        self.onHideEvent()
+        print("Info.hideEvent")
 
 class Ui_MainWindow:
     def setupUi(self, MainWindow):

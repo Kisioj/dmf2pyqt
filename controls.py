@@ -288,6 +288,7 @@ class Window(Main):
 
 class Pane(Main):
     is_pane = True
+    qt_class = "Pane"
 
     def generate_code(self):
         super().generate_code()
@@ -345,27 +346,36 @@ class Output(Control):
 
 class Browser(Control):
     auto_format = True
+    on_show = ""
     on_hide = ""
     show_history = False
     show_url = False
     use_title = False
 
+    def __init__(self, element):
+        super().__init__(element)
+        print("hello")
 
 class Map(Control):
     drop_zone = True
     icon_size = 0
     letterbox = True
+    on_show = ""
     on_hide = ""
     style = ""
     text_mode = False
     view_size = 0
     zoom = 0
 
+    def __init__(self, element):
+        super().__init__(element)
+        print("hello")
 
 class Info(Control):
     drop_zone = True
     highlight_color = "#0F0"
     multi_line = True
+    on_show = ""
     on_hide = ""
     on_tab = ""
     prefix_color = None
@@ -375,6 +385,9 @@ class Info(Control):
     tab_font_size = 0
     tab_text_color = None
 
+    def __init__(self, element):
+        super().__init__(element)
+        print("hello")
 
 class Child(Control):
     is_vert = False

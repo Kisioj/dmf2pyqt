@@ -22,7 +22,7 @@ TYPES_MAP = {
 def main(filename_dmf='byond.dmf', filename_json='byond.json', filename_pyqt='byond.py'):
     parser = DMF2JSONParser(input_filename=filename_dmf, output_filename=filename_json)
     parser.parse()
-    print(parser.to_json())
+    # print(parser.to_json())
 
     ui_menubars = collections.OrderedDict()
     for menubar_data in parser.menubars:
@@ -38,13 +38,13 @@ def main(filename_dmf='byond.dmf', filename_json='byond.json', filename_pyqt='by
         window.menu = ui_menubars.get(window.menu)
         ui_windows.append(window)
 
-    print("-")
-    print(ui_windows[0].generate_code())
-    print("-")
+    # print("-")
+    # print(ui_windows[0].generate_code())
+    # print("-")
     result = TEMPLATE.format(ui_windows[0].generate_code())
     with open('pyqt5.py', 'w') as f:
         f.write(result)
-    print(result)
+    # print(result)
 
 if __name__ == '__main__':
     main()

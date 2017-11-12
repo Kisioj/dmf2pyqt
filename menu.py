@@ -1,8 +1,3 @@
-import collections
-import copy
-from PIL import Image
-from PIL.ExifTags import TAGS
-
 
 class Action:
     id = None
