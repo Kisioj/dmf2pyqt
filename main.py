@@ -41,7 +41,7 @@ def main(filename_dmf='byond.dmf', filename_json='byond.json', filename_pyqt='by
     # print("-")
     # print(ui_windows[0].generate_code())
     # print("-")
-    result = TEMPLATE.format('        \n'.join(window.generate_code() for window in ui_windows))
+    result = TEMPLATE.format('\n        \n'.join(window.generate_code() for window in ui_windows))
     # print(ui_windows[2])
     with open('pyqt5.py', 'w') as f:
         f.write(result)

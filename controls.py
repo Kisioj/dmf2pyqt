@@ -400,6 +400,10 @@ class Child(Control):
     show_splitter = True
     splitter = 50
     qt_class = 'Child'
+    # self.pushButton = QtWidgets.QPushButton(self.mainvsplit)
+    # self.pushButton.setObjectName("pushButton")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def generate_code(self):
         super().generate_code()
