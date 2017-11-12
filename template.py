@@ -108,10 +108,13 @@ class PushButton(QtWidgets.QPushButton, BYONDWidget):
 class Input(QtWidgets.QLineEdit, BYONDWidget):
     pass
 
-class Child(QtWidgets.QWidget, BYONDWidget):
+class Child(QtWidgets.QSplitter, BYONDWidget):
     pass
 
 class Pane(QtWidgets.QWidget, BYONDWidget):
+    pass
+    
+class Output(QtWidgets.QTextBrowser, BYONDWidget):
     pass
 
 class Browser(QtWidgets.QWidget, BYONDWidget):

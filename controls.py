@@ -136,7 +136,7 @@ class Control:
 
     def generate_code(self):
         if self.parent:
-            print(self.parent)
+            # print(self.parent)
             # self.centralWidget
             self.add_code_line('self.{} = {}(self.{})', self.qt_name, self.qt_class, self.parent.qt_name, method=False)
         else:
@@ -356,6 +356,7 @@ class Browser(Control):
         super().__init__(element)
         print("hello")
 
+
 class Map(Control):
     drop_zone = True
     icon_size = 0
@@ -370,6 +371,7 @@ class Map(Control):
     def __init__(self, element):
         super().__init__(element)
         print("hello")
+
 
 class Info(Control):
     drop_zone = True
@@ -389,6 +391,7 @@ class Info(Control):
         super().__init__(element)
         print("hello")
 
+
 class Child(Control):
     is_vert = False
     left = None
@@ -397,6 +400,16 @@ class Child(Control):
     show_splitter = True
     splitter = 50
     qt_class = 'Child'
+
+    def generate_code(self):
+        super().generate_code()
+        orientation = "Horizontal"
+        if self.is_vert:
+            orientation = "Vertical"
+
+        self.add_code_line(f'setOrientation(QtCore.Qt.{orientation})', method=True)
+        self.add_code_line('setOpaqueResize(True)', method=True)
+        self.add_code_line('setChildrenCollapsible(True)', method=True)
 
 
 class Tab(Control):
