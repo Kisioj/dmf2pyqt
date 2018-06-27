@@ -334,7 +334,7 @@ class Ui_MainWindow:
         self.mainvsplit.setBaseGeometry(3, 0, 634, 400)
         self.mainvsplit.setObjectName("mainvsplit")
         self.mainWindow.resized.connect(self.mainvsplit.windowResizeEvent)
-        self.mainvsplit.setOrientation(QtCore.Qt.Vertical)
+        self.mainvsplit.setOrientation(QtCore.Qt.Horizontal)
         self.mainvsplit.setOpaqueResize(True)
         self.mainvsplit.setChildrenCollapsible(True)
         self.mainvsplit.setAutoFillBackground(True)
@@ -426,7 +426,7 @@ class Ui_MainWindow:
         self.rpanewindow.setBaseGeometry(0, 0, 0, 0)
         self.rpanewindow.setObjectName("rpanewindow")
         self.mainWindow.resized.connect(self.rpanewindow.windowResizeEvent)
-        self.rpanewindow.setOrientation(QtCore.Qt.Horizontal)
+        self.rpanewindow.setOrientation(QtCore.Qt.Vertical)
         self.rpanewindow.setOpaqueResize(True)
         self.rpanewindow.setChildrenCollapsible(True)
         self.rpanewindow.setAutoFillBackground(True)
@@ -553,7 +553,7 @@ class Ui_MainWindow:
         self.rpanewindow.right = get_widget("outputwindow")
 
         self.map.onShow()
-        self.info.onHide()
+        self.info.onShow()
         self.browser.onShow()
         # self.mainvsplit.left = self.mapwindow
         # self.mainvsplit.insertWidget(0, self.map)

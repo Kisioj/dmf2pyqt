@@ -502,9 +502,9 @@ class Child(Control):
 
     def generate_code(self):
         super().generate_code()
-        orientation = "Horizontal"
+        orientation = "Vertical"
         if self.is_vert:
-            orientation = "Vertical"
+            orientation = "Horizontal"
 
         self.add_code_line(f'setOrientation(QtCore.Qt.{orientation})', method=True)
         self.add_code_line('setOpaqueResize(True)', method=True)
