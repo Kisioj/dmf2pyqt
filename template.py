@@ -1,18 +1,79 @@
 TEMPLATE = '''#!/usr/bin/env python3
 import sys
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QStyleFactory
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 NULL_SIZE = QtCore.QSize(-1, -1)
 
+SHOW_BROWSER = True
+SHOW_INFO = True
+SHOW_MAP = True
+
+widget_id_2_widget = {{}}
+
+
+def get_widget(fullpath):
+    widget_id, *path = fullpath.split('.')
+    widget = widget_id_2_widget[widget_id]
+    for widget_id in path:
+        widget = widget.child_id_2_widget[widget_id]
+    return widget
+
+
+def get_widget_attr(widget_attr_path):
+    *fullpath, attr_name = widget_attr_path.split('.')
+    widget = get_widget('.'.join(fullpath))
+    return getattr(widget, attr_name)
+
+
+def set_widget_attr(widget_attr_path, value):
+    *fullpath, attr_name = widget_attr_path.split('.')
+    widget = get_widget('.'.join(fullpath))
+    setattr(widget, attr_name, value)
+
 
 class BYONDWidget:
     base_pos = QtCore.QPoint(-1, -1)
+    child_id_2_widget = {{}}
 
-    def __init__(self, *args):
-        # super().__init__(*args)
+    def __init__(self, *args, **kwargs):
+        self.id = kwargs.pop('id') if 'id' in kwargs else None
+        
+        self.parent_widget = args[0] if args else None
+        
+        if self.id:
+            widget_id_2_widget[self.id] = self
+            if self.parent_widget:
+                self.parent_widget.child_id_2_widget[self.id] = self            
+            
+        super().__init__(*args, **kwargs)
+        print(self.id)
         self.anchor_1 = None
         self.anchor_2 = None
+
+    @property
+    def is_visible(self):
+        return self.isVisible()
+        
+    @is_visible.setter
+    def is_visible(self, value):
+        if value:
+            self.show()
+        else:
+            self.hide()
+
+    def setParent(self, parent):
+        super().setParent(parent)
+        if not self.id:
+            return
+        
+        if self.parent_widget:
+            del self.parent_widget.child_id_2_widget[self.id]
+            
+        self.parent_widget = parent
+        self.parent_widget.child_id_2_widget[self.id] = self
+
+        print("setParent", parent)
 
     def onShowEvent(self):
         pass
@@ -90,6 +151,7 @@ class BYONDWidget:
 
 class QMainWindow(QtWidgets.QMainWindow):
     resized = QtCore.pyqtSignal(QtGui.QResizeEvent)
+    child_id_2_widget = {{}}
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
@@ -102,22 +164,59 @@ class QMainWindow(QtWidgets.QMainWindow):
         print("QMainWindow.setBaseSize")
 
 
-class PushButton(QtWidgets.QPushButton, BYONDWidget):
+class PushButton(BYONDWidget, QtWidgets.QPushButton):
     pass
 
-class Input(QtWidgets.QLineEdit, BYONDWidget):
+class Input(BYONDWidget, QtWidgets.QLineEdit):
     pass
 
-class Child(QtWidgets.QSplitter, BYONDWidget):
-    pass
+class Child(BYONDWidget, QtWidgets.QSplitter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._left = None
+        self._right = None
+    
+    @property
+    def left(self):
+        return self._left
+    
+    @left.setter
+    def left(self, widget):
+        if widget and isinstance(widget, str):
+            widget = widget_id_2_widget[widget]
+    
+        if self._left and self.indexOf(self._left):
+            self._left.setParent(None)
+        
+        if widget:
+            self.insertWidget(0, widget)
+        
+        self._left = widget
+    
+    @property
+    def right(self):
+        return self._right
+    
+    @right.setter
+    def right(self, widget):
+        if widget and isinstance(widget, str):
+            widget = widget_id_2_widget[widget]
+    
+        if self._right and self.indexOf(self._right):
+            self._right.setParent(None)
+        
+        if widget:    
+            self.addWidget(widget)
+        
+        self._right = widget
 
-class Pane(QtWidgets.QWidget, BYONDWidget):
+class Pane(BYONDWidget, QtWidgets.QWidget):
     pass
     
-class Output(QtWidgets.QTextBrowser, BYONDWidget):
+class Output(BYONDWidget, QtWidgets.QTextBrowser):
     pass
 
-class Browser(QtWidgets.QWidget, BYONDWidget):
+class Browser(BYONDWidget, QtWidgets.QWidget):
     def showEvent(self, *args, **kwargs):
         super().showEvent(*args, **kwargs)
         self.onShowEvent()
@@ -129,7 +228,7 @@ class Browser(QtWidgets.QWidget, BYONDWidget):
         print("Browser.hideEvent")
 
 
-class Map(QtWidgets.QWidget, BYONDWidget):
+class Map(BYONDWidget, QtWidgets.QWidget):
     def showEvent(self, *args, **kwargs):
         super().showEvent(*args, **kwargs)
         self.onShowEvent()
@@ -141,7 +240,7 @@ class Map(QtWidgets.QWidget, BYONDWidget):
         print("Map.hideEvent")
 
 
-class Info(QtWidgets.QWidget, BYONDWidget):
+class Info(BYONDWidget, QtWidgets.QWidget):
     def showEvent(self, *args, **kwargs):
         super().showEvent(*args, **kwargs)
         self.onShowEvent()
@@ -155,11 +254,21 @@ class Info(QtWidgets.QWidget, BYONDWidget):
 class Ui_MainWindow:
     def setupUi(self, MainWindow):
 {}
+
+{}
+
+        self.map.onShow()
+        self.info.onHide()
+        self.browser.onShow()
+        # self.mainvsplit.left = self.mapwindow
+        # self.mainvsplit.insertWidget(0, self.map)
+        # self.map.setParent(self.mainvsplit)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create('GTK+'))
     window = QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(window)

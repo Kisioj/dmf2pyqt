@@ -1,0 +1,1323 @@
+[
+    [
+        {
+            "type": "MACROLIST",
+            "id": "macro",
+            "macros": [
+                {
+                    "type": "MACRO",
+                    "name": "CENTER+REP",
+                    "command": ".center",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "NORTHEAST+REP",
+                    "command": ".northeast",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "SOUTHEAST+REP",
+                    "command": ".southeast",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "SOUTHWEST+REP",
+                    "command": ".southwest",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "NORTHWEST+REP",
+                    "command": ".northwest",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "WEST+REP",
+                    "command": ".west",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "NORTH+REP",
+                    "command": ".north",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "EAST+REP",
+                    "command": ".east",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "SOUTH+REP",
+                    "command": ".south",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "F1+REP",
+                    "command": ".options",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "F2+REP",
+                    "command": ".screenshot auto",
+                    "is_disabled": false
+                },
+                {
+                    "type": "MACRO",
+                    "name": "SHIFT+F2+REP",
+                    "command": ".screenshot",
+                    "is_disabled": false
+                }
+            ]
+        }
+    ],
+    [
+        {
+            "type": "MENUBAR",
+            "id": "menu",
+            "menus": [
+                {
+                    "name": "&File",
+                    "command": "",
+                    "saved_params": "is_checked",
+                    "actions": [
+                        {
+                            "type": "ACTION",
+                            "name": "&Options and Messages...\\tF1",
+                            "command": ".options",
+                            "is_checked": false,
+                            "can_check": false,
+                            "group": "",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        },
+                        {
+                            "type": "ACTION",
+                            "name": "&Quick screenshot\\tF2",
+                            "command": ".screenshot auto",
+                            "is_checked": false,
+                            "can_check": false,
+                            "group": "",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        },
+                        {
+                            "type": "ACTION",
+                            "name": "&Save screenshot as...\\tShift+F2",
+                            "command": ".screenshot",
+                            "is_checked": false,
+                            "can_check": false,
+                            "group": "",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        },
+                        {
+                            "type": "ACTION",
+                            "name": "&Quit",
+                            "command": ".quit",
+                            "is_checked": false,
+                            "can_check": false,
+                            "group": "",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "&Icons",
+                    "command": "",
+                    "saved_params": "is_checked",
+                    "actions": [
+                        {
+                            "type": "ACTION",
+                            "id": "stretch",
+                            "name": "&Stretch to fit",
+                            "command": {
+                                ".winset": [
+                                    {
+                                        "mapwindow.map.icon_size": 0
+                                    }
+                                ]
+                            },
+                            "is_checked": true,
+                            "can_check": true,
+                            "group": "size",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        },
+                        {
+                            "type": "ACTION",
+                            "id": "icon32",
+                            "name": "&32x32",
+                            "command": {
+                                ".winset": [
+                                    {
+                                        "mapwindow.map.icon_size": 32
+                                    }
+                                ]
+                            },
+                            "is_checked": false,
+                            "can_check": true,
+                            "group": "size",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        },
+                        {
+                            "type": "ACTION",
+                            "id": "icon16",
+                            "name": "&16x16",
+                            "command": {
+                                ".winset": [
+                                    {
+                                        "mapwindow.map.icon_size": 16
+                                    }
+                                ]
+                            },
+                            "is_checked": false,
+                            "can_check": true,
+                            "group": "size",
+                            "is_disabled": false,
+                            "saved_params": [
+                                "is_checked"
+                            ]
+                        },
+                        {
+                            "type": "SEPARATOR"
+                        },
+                        {
+                            "type": "ACTION",
+                            "id": "textmode",
+                            "name": "&Text",
+                            "command": {
+                                ".winset": [
+                                    {
+                                        "if": [
+                                            {
+                                                "menu.textmode.is_checked": true
+                                            }
+                                        ],
+                                        "then": [
+                                            {
+                                                "mapwindow.map.text_mode": true
+                                            }
+                                        ],
+                                        "else": [
+                                            {
+                                                "mapwindow.map.text_mode": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "is_checked": false,
+                            "can_check": true,
+                            "group": "",
+                            "is_disabled": false,
+                            "saved_params": [
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "groups": [
+                "size"
+            ]
+        }
+    ],
+    [
+        {
+            "type": "WINDOW",
+            "id": "mainwindow",
+            "pos": [
+                281,
+                0
+            ],
+            "size": [
+                640,
+                440
+            ],
+            "anchor1": null,
+            "anchor2": null,
+            "font_family": "",
+            "font_size": 0,
+            "font_style": "",
+            "text_color": "#000000",
+            "background_color": null,
+            "is_visible": true,
+            "is_disabled": false,
+            "is_transparent": false,
+            "is_default": true,
+            "border": null,
+            "drop_zone": false,
+            "right_click": false,
+            "saved_params": [
+                "pos",
+                "size",
+                "is_minimized",
+                "is_maximized"
+            ],
+            "title": "Dream Seeker",
+            "titlebar": true,
+            "statusbar": true,
+            "can_close": true,
+            "can_minimize": true,
+            "can_resize": true,
+            "is_minimized": false,
+            "is_maximized": true,
+            "can_scroll": null,
+            "icon": "",
+            "image": "",
+            "image_mode": "stretch",
+            "keep_aspect": false,
+            "transparent_color": null,
+            "alpha": 255,
+            "macro": "macro",
+            "menu": "menu",
+            "on_close": "",
+            "controls": [
+                {
+                    "type": "CHILD",
+                    "id": "mainvsplit",
+                    "pos": [
+                        3,
+                        0
+                    ],
+                    "size": [
+                        634,
+                        400
+                    ],
+                    "anchor1": [
+                        0,
+                        0
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": null,
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "splitter"
+                    ],
+                    "left": "",
+                    "right": "rpane",
+                    "is_vert": true,
+                    "splitter": 50,
+                    "show_splitter": true,
+                    "lock": null
+                },
+                {
+                    "type": "INPUT",
+                    "id": "input",
+                    "pos": [
+                        3,
+                        420
+                    ],
+                    "size": [
+                        517,
+                        20
+                    ],
+                    "anchor1": [
+                        0,
+                        100
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": "#d3b5b5",
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": true,
+                    "border": "sunken",
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "command"
+                    ],
+                    "command": "",
+                    "multi_line": false,
+                    "is_password": false,
+                    "no_command": false
+                },
+                {
+                    "type": "BUTTON",
+                    "id": "saybutton",
+                    "pos": [
+                        520,
+                        420
+                    ],
+                    "size": [
+                        40,
+                        20
+                    ],
+                    "anchor1": [
+                        100,
+                        100
+                    ],
+                    "anchor2": null,
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": null,
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "is_checked"
+                    ],
+                    "text": "Chat",
+                    "image": "",
+                    "command": {
+                        ".winset": [
+                            {
+                                "if": [
+                                    {
+                                        "saybutton.is_checked": true
+                                    }
+                                ],
+                                "then": [
+                                    {
+                                        "input.command": "!say"
+                                    },
+                                    {
+                                        "macrobutton.is_checked": false
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "input.command": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "is_flat": false,
+                    "stretch": false,
+                    "is_checked": false,
+                    "group": "",
+                    "button_type": "pushbox"
+                },
+                {
+                    "type": "BUTTON",
+                    "id": "macrobutton",
+                    "pos": [
+                        560,
+                        420
+                    ],
+                    "size": [
+                        30,
+                        20
+                    ],
+                    "anchor1": [
+                        100,
+                        100
+                    ],
+                    "anchor2": null,
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": null,
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "is_checked"
+                    ],
+                    "text": "Alt",
+                    "image": "",
+                    "command": {
+                        ".winset": [
+                            {
+                                "if": [
+                                    {
+                                        "macrobutton.is_checked": true
+                                    }
+                                ],
+                                "then": [
+                                    {
+                                        "input.command": "!.alt"
+                                    },
+                                    {
+                                        "saybutton.is_checked": false
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "input.command": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "is_flat": false,
+                    "stretch": false,
+                    "is_checked": false,
+                    "group": "",
+                    "button_type": "pushbox"
+                },
+                {
+                    "type": "BUTTON",
+                    "id": "hostb",
+                    "pos": [
+                        590,
+                        420
+                    ],
+                    "size": [
+                        47,
+                        20
+                    ],
+                    "anchor1": [
+                        100,
+                        100
+                    ],
+                    "anchor2": null,
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": null,
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "is_checked"
+                    ],
+                    "text": "Host...",
+                    "image": "",
+                    "command": ".host",
+                    "is_flat": false,
+                    "stretch": false,
+                    "is_checked": false,
+                    "group": "",
+                    "button_type": "pushbutton"
+                }
+            ]
+        },
+        {
+            "type": "PANE",
+            "id": "mapwindow",
+            "pos": null,
+            "size": [
+                640,
+                480
+            ],
+            "anchor1": null,
+            "anchor2": null,
+            "font_family": "",
+            "font_size": 0,
+            "font_style": "",
+            "text_color": "#000000",
+            "background_color": null,
+            "is_visible": true,
+            "is_disabled": false,
+            "is_transparent": false,
+            "is_default": false,
+            "border": null,
+            "drop_zone": false,
+            "right_click": false,
+            "saved_params": [
+                "pos",
+                "size",
+                "is_minimized",
+                "is_maximized"
+            ],
+            "title": "",
+            "titlebar": false,
+            "statusbar": false,
+            "can_close": false,
+            "can_minimize": false,
+            "can_resize": false,
+            "is_minimized": false,
+            "is_maximized": false,
+            "can_scroll": null,
+            "icon": "",
+            "image": "",
+            "image_mode": "stretch",
+            "keep_aspect": false,
+            "transparent_color": null,
+            "alpha": 255,
+            "macro": "",
+            "menu": "",
+            "on_close": "",
+            "controls": [
+                {
+                    "type": "MAP",
+                    "id": "map",
+                    "pos": [
+                        0,
+                        0
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "anchor1": [
+                        0,
+                        0
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": null,
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": true,
+                    "border": null,
+                    "drop_zone": true,
+                    "right_click": false,
+                    "saved_params": [
+                        "icon_size"
+                    ],
+                    "icon_size": 0,
+                    "text_mode": false,
+                    "on_show": {
+                        ".winset": [
+                            {
+                                "mainwindow.mainvsplit.left": "mapwindow"
+                            }
+                        ]
+                    },
+                    "on_hide": {
+                        ".winset": [
+                            {
+                                "mainwindow.mainvsplit.left": ""
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "type": "PANE",
+            "id": "outputwindow",
+            "pos": null,
+            "size": [
+                640,
+                480
+            ],
+            "anchor1": null,
+            "anchor2": null,
+            "font_family": "",
+            "font_size": 0,
+            "font_style": "",
+            "text_color": "#000000",
+            "background_color": null,
+            "is_visible": true,
+            "is_disabled": false,
+            "is_transparent": false,
+            "is_default": false,
+            "border": null,
+            "drop_zone": false,
+            "right_click": false,
+            "saved_params": [
+                "pos",
+                "size",
+                "is_minimized",
+                "is_maximized"
+            ],
+            "title": "",
+            "titlebar": false,
+            "statusbar": false,
+            "can_close": false,
+            "can_minimize": false,
+            "can_resize": false,
+            "is_minimized": false,
+            "is_maximized": false,
+            "can_scroll": null,
+            "icon": "",
+            "image": "",
+            "image_mode": "stretch",
+            "keep_aspect": false,
+            "transparent_color": null,
+            "alpha": 255,
+            "macro": "",
+            "menu": "",
+            "on_close": "",
+            "controls": [
+                {
+                    "type": "OUTPUT",
+                    "id": "output",
+                    "pos": [
+                        0,
+                        0
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "anchor1": [
+                        0,
+                        0
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": "#ffffff",
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": true,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "max_lines"
+                    ],
+                    "link_color": "#0000ff",
+                    "visited_color": "#ff00ff",
+                    "style": ".system {color:#ff0000;}",
+                    "enable_http_images": false,
+                    "max_lines": 1000,
+                    "image": ""
+                }
+            ]
+        },
+        {
+            "type": "PANE",
+            "id": "rpane",
+            "pos": null,
+            "size": [
+                640,
+                480
+            ],
+            "anchor1": null,
+            "anchor2": null,
+            "font_family": "",
+            "font_size": 0,
+            "font_style": "",
+            "text_color": "#000000",
+            "background_color": null,
+            "is_visible": true,
+            "is_disabled": false,
+            "is_transparent": false,
+            "is_default": false,
+            "border": null,
+            "drop_zone": false,
+            "right_click": false,
+            "saved_params": [
+                "pos",
+                "size",
+                "is_minimized",
+                "is_maximized"
+            ],
+            "title": "",
+            "titlebar": true,
+            "statusbar": true,
+            "can_close": true,
+            "can_minimize": true,
+            "can_resize": true,
+            "is_minimized": false,
+            "is_maximized": false,
+            "can_scroll": null,
+            "icon": "",
+            "image": "",
+            "image_mode": "stretch",
+            "keep_aspect": false,
+            "transparent_color": null,
+            "alpha": 255,
+            "macro": "",
+            "menu": "",
+            "on_close": "",
+            "controls": [
+                {
+                    "type": "CHILD",
+                    "id": "rpanewindow",
+                    "pos": [
+                        0,
+                        0
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "anchor1": [
+                        0,
+                        0
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": null,
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "splitter"
+                    ],
+                    "left": "",
+                    "right": "outputwindow",
+                    "is_vert": false,
+                    "splitter": 50,
+                    "show_splitter": true,
+                    "lock": null
+                },
+                {
+                    "type": "BUTTON",
+                    "id": "textb",
+                    "pos": [
+                        0,
+                        0
+                    ],
+                    "size": [
+                        60,
+                        20
+                    ],
+                    "anchor1": null,
+                    "anchor2": null,
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": null,
+                    "background_color": null,
+                    "is_visible": false,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "is_checked"
+                    ],
+                    "text": "Text",
+                    "image": "",
+                    "command": {
+                        ".winset": [
+                            {
+                                "rpanewindow.left": ""
+                            }
+                        ]
+                    },
+                    "is_flat": false,
+                    "stretch": false,
+                    "is_checked": true,
+                    "group": "rpanemode",
+                    "button_type": "pushbox"
+                },
+                {
+                    "type": "BUTTON",
+                    "id": "browseb",
+                    "pos": [
+                        65,
+                        0
+                    ],
+                    "size": [
+                        60,
+                        20
+                    ],
+                    "anchor1": null,
+                    "anchor2": null,
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": null,
+                    "background_color": null,
+                    "is_visible": false,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "is_checked"
+                    ],
+                    "text": "Browser",
+                    "image": "",
+                    "command": {
+                        ".winset": [
+                            {
+                                "rpanewindow.left": "browserwindow"
+                            }
+                        ]
+                    },
+                    "is_flat": false,
+                    "stretch": false,
+                    "is_checked": false,
+                    "group": "rpanemode",
+                    "button_type": "pushbox"
+                },
+                {
+                    "type": "BUTTON",
+                    "id": "infob",
+                    "pos": [
+                        130,
+                        0
+                    ],
+                    "size": [
+                        60,
+                        20
+                    ],
+                    "anchor1": null,
+                    "anchor2": null,
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": null,
+                    "background_color": null,
+                    "is_visible": false,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": false,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        "is_checked"
+                    ],
+                    "text": "Info",
+                    "image": "",
+                    "command": {
+                        ".winset": [
+                            {
+                                "rpanewindow.left": "infowindow"
+                            }
+                        ]
+                    },
+                    "is_flat": false,
+                    "stretch": false,
+                    "is_checked": false,
+                    "group": "rpanemode",
+                    "button_type": "pushbox"
+                }
+            ]
+        },
+        {
+            "type": "PANE",
+            "id": "browserwindow",
+            "pos": null,
+            "size": [
+                640,
+                480
+            ],
+            "anchor1": null,
+            "anchor2": null,
+            "font_family": "",
+            "font_size": 0,
+            "font_style": "",
+            "text_color": "#000000",
+            "background_color": null,
+            "is_visible": true,
+            "is_disabled": false,
+            "is_transparent": false,
+            "is_default": false,
+            "border": null,
+            "drop_zone": false,
+            "right_click": false,
+            "saved_params": [
+                "pos",
+                "size",
+                "is_minimized",
+                "is_maximized"
+            ],
+            "title": "Browser",
+            "titlebar": true,
+            "statusbar": true,
+            "can_close": true,
+            "can_minimize": true,
+            "can_resize": true,
+            "is_minimized": false,
+            "is_maximized": false,
+            "can_scroll": null,
+            "icon": "",
+            "image": "",
+            "image_mode": "stretch",
+            "keep_aspect": false,
+            "transparent_color": null,
+            "alpha": 255,
+            "macro": "",
+            "menu": "",
+            "on_close": "",
+            "controls": [
+                {
+                    "type": "BROWSER",
+                    "id": "browser",
+                    "pos": [
+                        0,
+                        0
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "anchor1": [
+                        0,
+                        0
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": "#ffffff",
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": true,
+                    "border": null,
+                    "drop_zone": false,
+                    "right_click": false,
+                    "saved_params": [
+                        ""
+                    ],
+                    "show_history": true,
+                    "show_url": false,
+                    "auto_format": true,
+                    "use_title": false,
+                    "on_show": {
+                        ".winset": [
+                            {
+                                "if": [
+                                    {
+                                        "rpane.infob.is_visible": true
+                                    }
+                                ],
+                                "then": [
+                                    {
+                                        "rpane.infob.pos": [
+                                            130,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "else": []
+                            },
+                            {
+                                "rpane.textb.is_visible": true
+                            },
+                            {
+                                "rpane.browseb.is_visible": true
+                            },
+                            {
+                                "rpane.browseb.is_checked": true
+                            },
+                            {
+                                "rpane.rpanewindow.pos": [
+                                    0,
+                                    30
+                                ]
+                            },
+                            {
+                                "rpane.rpanewindow.size": [
+                                    0,
+                                    0
+                                ]
+                            },
+                            {
+                                "rpane.rpanewindow.left": "browserwindow"
+                            }
+                        ]
+                    },
+                    "on_hide": {
+                        ".winset": [
+                            {
+                                "rpane.browseb.is_visible": false
+                            },
+                            {
+                                "if": [
+                                    {
+                                        "rpane.infob.is_visible": true
+                                    }
+                                ],
+                                "then": [
+                                    {
+                                        "rpane.infob.is_checked": true
+                                    },
+                                    {
+                                        "rpane.infob.pos": [
+                                            65,
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "rpane.rpanewindow.left": "infowindow"
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "rpane.rpanewindow.left": "textwindow"
+                                    },
+                                    {
+                                        "rpane.textb.is_visible": false
+                                    },
+                                    {
+                                        "rpane.rpanewindow.pos": [
+                                            0,
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "rpane.rpanewindow.size": [
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "type": "PANE",
+            "id": "infowindow",
+            "pos": null,
+            "size": [
+                640,
+                480
+            ],
+            "anchor1": null,
+            "anchor2": null,
+            "font_family": "",
+            "font_size": 0,
+            "font_style": "",
+            "text_color": "#000000",
+            "background_color": null,
+            "is_visible": true,
+            "is_disabled": false,
+            "is_transparent": false,
+            "is_default": false,
+            "border": null,
+            "drop_zone": false,
+            "right_click": false,
+            "saved_params": [
+                "pos",
+                "size",
+                "is_minimized",
+                "is_maximized"
+            ],
+            "title": "Info",
+            "titlebar": true,
+            "statusbar": true,
+            "can_close": true,
+            "can_minimize": true,
+            "can_resize": true,
+            "is_minimized": false,
+            "is_maximized": false,
+            "can_scroll": null,
+            "icon": "",
+            "image": "",
+            "image_mode": "stretch",
+            "keep_aspect": false,
+            "transparent_color": null,
+            "alpha": 255,
+            "macro": "",
+            "menu": "",
+            "on_close": "",
+            "controls": [
+                {
+                    "type": "INFO",
+                    "id": "info",
+                    "pos": [
+                        0,
+                        0
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "anchor1": [
+                        0,
+                        0
+                    ],
+                    "anchor2": [
+                        100,
+                        100
+                    ],
+                    "font_family": "",
+                    "font_size": 0,
+                    "font_style": "",
+                    "text_color": "#000000",
+                    "background_color": "#ffffff",
+                    "is_visible": true,
+                    "is_disabled": false,
+                    "is_transparent": false,
+                    "is_default": true,
+                    "border": null,
+                    "drop_zone": true,
+                    "right_click": false,
+                    "saved_params": [
+                        ""
+                    ],
+                    "highlight_color": "#00aa00",
+                    "tab_text_color": "#000000",
+                    "tab_background_color": null,
+                    "tab_font_family": "",
+                    "tab_font_size": 0,
+                    "tab_font_style": "",
+                    "allow_html": false,
+                    "multi_line": true,
+                    "on_show": {
+                        ".winset": [
+                            {
+                                "rpane.infob.is_visible": true
+                            },
+                            {
+                                "if": [
+                                    {
+                                        "rpane.browseb.is_visible": true
+                                    }
+                                ],
+                                "then": [
+                                    {
+                                        "rpane.infob.pos": [
+                                            130,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "rpane.infob.pos": [
+                                            65,
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "rpane.textb.is_visible": true
+                                    },
+                                    {
+                                        "rpane.infob.is_checked": true
+                                    },
+                                    {
+                                        "rpane.rpanewindow.pos": [
+                                            0,
+                                            30
+                                        ]
+                                    },
+                                    {
+                                        "rpane.rpanewindow.size": [
+                                            0,
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "rpane.rpanewindow.left": "infowindow"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "on_hide": {
+                        ".winset": [
+                            {
+                                "rpane.infob.is_visible": false
+                            },
+                            {
+                                "if": [
+                                    {
+                                        "rpane.browseb.is_visible": true
+                                    }
+                                ],
+                                "then": [
+                                    {
+                                        "rpane.browseb.is_checked": true
+                                    },
+                                    {
+                                        "rpane.rpanewindow.left": "browserwindow"
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "rpane.textb.is_visible": false
+                                    },
+                                    {
+                                        "rpane.rpanewindow.pos": [
+                                            0,
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "rpane.rpanewindow.size": [
+                                            0,
+                                            0
+                                        ]
+                                    },
+                                    {
+                                        "rpane.rpanewindow.left": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "on_tab": ""
+                }
+            ]
+        }
+    ]
+]

@@ -2,6 +2,11 @@ import copy
 import menu
 
 
+def underscore_to_camelcase(word):
+    head, *tail = word.split('_')
+    return head + ''.join(word.capitalize() for word in tail)
+
+
 class Align:
     LEFT = "left"
     RIGHT = "right"
@@ -96,6 +101,7 @@ class Control:
     can_check = None
     is_checked = None
     qt_code = None
+    qt_code_bottom = None
     qt_class = ''
 
     idx = 0
@@ -126,21 +132,27 @@ class Control:
         del d['parent']
         return '{} {}'.format(self.__class__.__name__, d)
 
-    def add_code_line(self, text, *args, method=True):
+    def add_code_line(self, text, *args, method=True, bottom=False):
         prefix = '        '
         if method:
             prefix += 'self.{}.'.format(self.qt_name)
 
         text = prefix + text.format(*args)
-        self.qt_code.append(text)
+        if bottom:
+            self.qt_code_bottom.append(text)
+        else:
+            self.qt_code.append(text)
+
+    def generate_code_bottom(self):
+        return '\n'.join(self.qt_code_bottom)
 
     def generate_code(self):
         if self.parent:
             # print(self.parent)
             # self.centralWidget
-            self.add_code_line('self.{} = {}(self.{})', self.qt_name, self.qt_class, self.parent.qt_name, method=False)
+            self.add_code_line('self.{} = {}(self.{}, id="{}")', self.qt_name, self.qt_class, self.parent.qt_name, self.qt_name.lower(), method=False)
         else:
-            self.add_code_line('self.{} = {}()', self.qt_name, self.qt_class, method=False)
+            self.add_code_line('self.{} = {}(id="{}")', self.qt_name, self.qt_class, self.qt_name.lower(), method=False)
 
         if self.button_type == ButtonType.PUSHBOX or self.can_check:
             self.add_code_line('setCheckable(True)')
@@ -157,6 +169,8 @@ class Control:
         if self.anchor2:
             self.add_code_line('setAnchor2({}, {})', *self.anchor2)
 
+        if not self.pos:  # fixme
+            self.pos = (0, 0)
         if self.pos and self.size:
             self.add_code_line('setBaseGeometry({}, {}, {}, {})', *self.pos, *self.size)
 
@@ -193,6 +207,7 @@ class Main(Control):
         super().__init__(*args, **kwargs)
         self.children = []
         self.qt_code = []
+        self.qt_code_bottom = []
 
 
 class Window(Main):
@@ -225,7 +240,7 @@ class Window(Main):
         # widget.generate_code()
 
         widget_name = 'centralWidget'
-        qt('self.{} = Pane(self.{})', widget_name, self.qt_name, method=False)
+        qt('self.{} = Pane(self.{}, id="{}")', widget_name, self.qt_name, self.qt_name.lower(), method=False)
         qt('setCentralWidget(self.{})', widget_name)
 
         if self.statusbar:
@@ -281,6 +296,7 @@ class Window(Main):
         for child in self.children:
             qt('', method=False)
             child.qt_code = self.qt_code
+            child.qt_code_bottom = self.qt_code_bottom
             child.generate_code()
 
         return '\n'.join(self.qt_code)
@@ -295,7 +311,13 @@ class Pane(Main):
         for child in self.children:
             self.add_code_line('', method=False)
             child.qt_code = self.qt_code
+            child.qt_code_bottom = self.qt_code_bottom
             child.generate_code()
+
+        self.add_code_line('setAutoFillBackground(True)', method=True)
+        self.add_code_line(f'palette = self.{self.qt_name}.palette()', method=False)
+        self.add_code_line(f'palette.setColor(self.{self.qt_name}.backgroundRole(), QtCore.Qt.green)', method=False)
+        self.add_code_line('setPalette(palette)', method=True)
 
         return '\n'.join(self.qt_code)
 
@@ -344,10 +366,63 @@ class Output(Control):
     visited_color = "#F0F"
 
 
-class Browser(Control):
-    auto_format = True
+class OnShowMixin:
     on_show = ""
     on_hide = ""
+
+    def __init__(self, element):
+        super().__init__(element)
+        self.on_show = element.get('on_show', {}).get('.winset')
+        self.on_hide = element.get('on_hide', {}).get('.winset')
+
+    def generate_code(self):
+        super().generate_code()
+
+        def get_value(key, value):
+            attr_name = key.split('.')[-1]
+            if attr_name in ('left', 'right'):
+                value = f'"{value}"'
+            return value
+
+        def generate_action_code(action, indent=4):
+            for key, value in action.items():
+                self.add_code_line(f'{" "*indent}set_widget_attr("{key}", {get_value(key, value)})', method=False)
+
+        def generate_toggle_code(attr_name):
+            attr = getattr(self, attr_name)
+            if attr:
+                self.add_code_line('', method=False)
+                self.add_code_line(f'def {attr_name}():', method=False)
+                for action in attr:
+                    if all(key in action for key in ('if', 'then', 'else')):
+
+                        conditions = []
+                        for condition in action['if']:
+                            for key, value in condition.items():  # FIXME
+                                conditions.append(f'get_widget_attr("{key}") == {get_value(key, value)}')
+
+                        conditions = ' and '.join(conditions)
+                        self.add_code_line(f'    if {conditions}:', method=False)
+
+                        for subaction in action['then']:
+                            generate_action_code(subaction, indent=8)
+
+                        if action['else']:
+                            self.add_code_line('    else:', method=False)
+
+                        for subaction in action['else']:
+                            generate_action_code(subaction, indent=8)
+                    else:
+                        generate_action_code(action)
+
+                self.add_code_line('', method=False)
+                self.add_code_line(f'{underscore_to_camelcase(attr_name)} = {attr_name}', method=True)
+
+        generate_toggle_code('on_show')
+        generate_toggle_code('on_hide')
+
+class Browser(OnShowMixin, Control):
+    auto_format = True
     show_history = False
     show_url = False
     use_title = False
@@ -356,13 +431,19 @@ class Browser(Control):
         super().__init__(element)
         print("hello")
 
+    def generate_code(self):
+        super().generate_code()
 
-class Map(Control):
+        self.add_code_line('setAutoFillBackground(True)', method=True)
+        self.add_code_line(f'palette = self.{self.qt_name}.palette()', method=False)
+        self.add_code_line(f'palette.setColor(self.{self.qt_name}.backgroundRole(), QtCore.Qt.yellow)', method=False)
+        self.add_code_line('setPalette(palette)', method=True)
+
+
+class Map(OnShowMixin, Control):
     drop_zone = True
     icon_size = 0
     letterbox = True
-    on_show = ""
-    on_hide = ""
     style = ""
     text_mode = False
     view_size = 0
@@ -372,13 +453,19 @@ class Map(Control):
         super().__init__(element)
         print("hello")
 
+    def generate_code(self):
+        super().generate_code()
 
-class Info(Control):
+        self.add_code_line('setAutoFillBackground(True)', method=True)
+        self.add_code_line(f'palette = self.{self.qt_name}.palette()', method=False)
+        self.add_code_line(f'palette.setColor(self.{self.qt_name}.backgroundRole(), QtCore.Qt.black)', method=False)
+        self.add_code_line('setPalette(palette)', method=True)
+
+
+class Info(OnShowMixin, Control):
     drop_zone = True
     highlight_color = "#0F0"
     multi_line = True
-    on_show = ""
-    on_hide = ""
     on_tab = ""
     prefix_color = None
     suffix_color = None
@@ -391,6 +478,13 @@ class Info(Control):
         super().__init__(element)
         print("hello")
 
+    def generate_code(self):
+        super().generate_code()
+
+        self.add_code_line('setAutoFillBackground(True)', method=True)
+        self.add_code_line(f'palette = self.{self.qt_name}.palette()', method=False)
+        self.add_code_line(f'palette.setColor(self.{self.qt_name}.backgroundRole(), QtCore.Qt.darkBlue)', method=False)
+        self.add_code_line('setPalette(palette)', method=True)
 
 class Child(Control):
     is_vert = False
@@ -405,6 +499,7 @@ class Child(Control):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
     def generate_code(self):
         super().generate_code()
         orientation = "Horizontal"
@@ -414,6 +509,22 @@ class Child(Control):
         self.add_code_line(f'setOrientation(QtCore.Qt.{orientation})', method=True)
         self.add_code_line('setOpaqueResize(True)', method=True)
         self.add_code_line('setChildrenCollapsible(True)', method=True)
+
+        self.add_code_line('setAutoFillBackground(True)', method=True)
+        self.add_code_line(f'palette = self.{self.qt_name}.palette()', method=False)
+        self.add_code_line(f'palette.setColor(self.{self.qt_name}.backgroundRole(), QtCore.Qt.red)', method=False)
+        self.add_code_line('setPalette(palette)', method=True)
+
+        if self.left:
+            self.add_code_line(f'left = get_widget("{self.left}")', method=True, bottom=True)
+
+        if self.right:
+            self.add_code_line(f'right = get_widget("{self.right}")', method=True, bottom=True)
+
+        # self.mainvsplit.setAutoFillBackground(True)
+        # palette = self.mainvsplit.palette()
+        # palette.setColor(self.mainvsplit.backgroundRole(), QtCore.Qt.red)  # QColor(255, 0, 0, 255)
+        # self.mainvsplit.setPalette(palette)
 
 
 class Tab(Control):
